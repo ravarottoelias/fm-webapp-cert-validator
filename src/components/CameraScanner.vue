@@ -1,8 +1,20 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { thereIsAnyVideoDevice } from '@/helpers/getVideoDevices'
+import { onMounted, reactive, ref } from 'vue'
 import { StreamBarcodeReader } from 'vue-barcode-reader'
+import { useRouter } from 'vue-router'
+import LoadingComponent from './LoadingComponent.vue'
+import NoVideoDevicesFound from './NoVideoDevicesFound.vue'
+import ValidCertificate from './ValidCertificate.vue'
 
+const router = useRouter()
 const decodedText = ref('')
+const isLoading = ref(true)
+const showQRScanner = ref(false)
+const videoDevices = reactive({
+  count: 0,
+})
+const certificateData = ref('')
 
 const onLoaded = () => {
   console.log('loaded')
@@ -14,41 +26,69 @@ const onError = () => {
 
 const onDecode = (text) => {
   decodedText.value = text
+  isLoading.value = false
+  showQRScanner.value = false
+  showResult(decodedText)
 }
 
-var videoDevices = reactive({
-  count: 0,
+onMounted(() => {
+  // navigator.mediaDevices.enumerateDevices().then(function (devices) {
+  //   const devicesList = devices.filter((device) => device.kind === 'videoinput')
+  //   videoDevices.count = devicesList.length
+  //   if (videoDevices.count > 0) {
+  //     showQRScanner.value = true
+  //   }
+  //   isLoading.value = false
+  // })
+  checkVideoDevices()
 })
 
-navigator.mediaDevices.enumerateDevices().then(function (devices) {
-  console.log(devices)
-  const devicesList = devices.filter((device) => device.kind === 'videoinput')
-  videoDevices.count = devicesList.length
-})
+const checkVideoDevices = async () => {
+  if (await thereIsAnyVideoDevice()) {
+    showQRScanner.value = true
+  }
+  isLoading.value = false
+}
+
+//MOCK VALIDA CERTIFICADO
+const showResult = async (decodedText) => {
+  const url = new URL(decodedText.value)
+  const qr = url.searchParams.get('qr')
+  const version = url.searchParams.get('version')
+  console.log(qr)
+
+  if (qr != null) {
+    router.push({
+      path: '/validate',
+      query: {
+        qr: qr,
+        version: version,
+      },
+    })
+  } else {
+    alert('FALLO')
+  }
+}
 </script>
 
 <template>
-  <div class="px-4 py-4 my-4 text-center" v-if="videoDevices.count == 0">
-    <div class="text-danger" style="font-size: 50px"><i class="bi bi-camera-video-off"></i></div>
+  <NoVideoDevicesFound v-if="videoDevices.count == 0" />
 
-    <h1 class="display-5 fw-bold">Ups! Algo salió mal</h1>
-    <div class="col-lg-6 mx-auto">
-      <p class="lead mb-4">No se encontraron dispositivos de video.</p>
-      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <router-link :to="{ name: 'home' }" class="btn btn-primary btn-lg px-4 gap-3"
-          >Volver</router-link
-        >
-      </div>
-    </div>
-  </div>
+  <LoadingComponent v-if="isLoading" />
+
   <StreamBarcodeReader
-    v-if="videoDevices.count > 0"
+    v-if="showQRScanner"
     @decode="onDecode"
     @loaded="onLoaded"
     @error="onError"
   ></StreamBarcodeReader>
 
+  <ValidCertificate :certificateData="certificateData" />
+
   <div class="px-4">
+    <button type="submit" class="btn btn-primary" @click="validateCert">
+      Mock validar certificado
+    </button>
     <div class="alert alert-info" role="alert">Devices: {{ videoDevices.count }}</div>
     <div class="alert alert-secondary" role="alert">
       The decoded value in QR/barcode is: <b>{{ decodedText }}</b>

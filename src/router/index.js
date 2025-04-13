@@ -1,4 +1,5 @@
 import QrValidatorView from '@/views/QrValidatorView.vue'
+import ValidatorView from '@/views/ValidatorView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
@@ -11,17 +12,14 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/qr-validator',
+      path: '/validate/scan-qr',
       name: 'qrValidator',
       component: QrValidatorView,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      path: '/validate',
+      name: 'validator',
+      component: ValidatorView,
     },
   ],
 })

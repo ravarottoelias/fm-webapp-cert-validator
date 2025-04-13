@@ -22,7 +22,7 @@ import { RouterView } from 'vue-router'
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+            <router-link :to="{ name: 'home' }" class="nav-link">Inicio</router-link>
           </li>
         </ul>
         <form class="d-flex">
@@ -32,7 +32,6 @@ import { RouterView } from 'vue-router'
       </div>
     </div>
   </nav>
-  <HelloWorld />
   <RouterView />
 </template>
 

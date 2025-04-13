@@ -1,11 +1,11 @@
 <script setup>
-import CameraScanner from '@/components/CameraScanner.vue'
+import ValidatorComponent from '@/components/ValidatorComponent.vue'
 </script>
 
 <template>
   <main>
     <div class="container">
-      <CameraScanner />
+      <ValidatorComponent />
     </div>
   </main>
 </template>
