@@ -1,6 +1,4 @@
-<script setup>
-console.log(import.meta.env.VITE_API_MS_CERT_VALIDATION)
-</script>
+<script setup></script>
 
 <template>
   <div class="px-4 py-4 my-4 text-center">

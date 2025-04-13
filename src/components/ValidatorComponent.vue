@@ -83,14 +83,23 @@ const validateCert = async () => {
           <div class="row d-flex justify-content-center">
             <div class="col-6 col-sm-5 col-md-6 col-xl-3">
               <img class="i-valid-cert img-fluid" src="/file-not-found.png" alt="" />
-              <p>Nada por aqui.</p>
+              <!-- <p>Nada por aqui.</p> -->
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row my-3">
         <div class="col-12 text-center">
-          <h5 class="text-muted">No se encontraron datos relacionados al certificado.</h5>
+          <p class="lead">No se encontraron datos relacionados al certificado.</p>
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-12 text-center">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <router-link :to="{ name: 'home' }" class="btn btn-primary btn-lg px-4 gap-3"
+              >Volver</router-link
+            >
+          </div>
         </div>
       </div>
     </div>

@@ -5,7 +5,6 @@ import { StreamBarcodeReader } from 'vue-barcode-reader'
 import { useRouter } from 'vue-router'
 import LoadingComponent from './LoadingComponent.vue'
 import NoVideoDevicesFound from './NoVideoDevicesFound.vue'
-import ValidCertificate from './ValidCertificate.vue'
 
 const router = useRouter()
 const decodedText = ref('')
@@ -14,15 +13,11 @@ const showQRScanner = ref(false)
 const videoDevices = reactive({
   count: 0,
 })
-const certificateData = ref('')
+const APP_MODE_IS_DEVELOP = import.meta.env.VITE_NODE_ENV == 'development'
 
-const onLoaded = () => {
-  console.log('loaded')
-}
+const onLoaded = () => {}
 
-const onError = () => {
-  console.log('Error')
-}
+const onError = () => {}
 
 const onDecode = (text) => {
   decodedText.value = text
@@ -32,14 +27,11 @@ const onDecode = (text) => {
 }
 
 onMounted(() => {
-  // navigator.mediaDevices.enumerateDevices().then(function (devices) {
-  //   const devicesList = devices.filter((device) => device.kind === 'videoinput')
-  //   videoDevices.count = devicesList.length
-  //   if (videoDevices.count > 0) {
-  //     showQRScanner.value = true
-  //   }
-  //   isLoading.value = false
-  // })
+  if (APP_MODE_IS_DEVELOP) {
+    console.log('----------------------')
+    console.log('APP MODE IS: ' + import.meta.env.VITE_NODE_ENV)
+    console.log('----------------------')
+  }
   checkVideoDevices()
 })
 
@@ -50,12 +42,10 @@ const checkVideoDevices = async () => {
   isLoading.value = false
 }
 
-//MOCK VALIDA CERTIFICADO
 const showResult = async (decodedText) => {
   const url = new URL(decodedText.value)
   const qr = url.searchParams.get('qr')
   const version = url.searchParams.get('version')
-  console.log(qr)
 
   if (qr != null) {
     router.push({
@@ -68,6 +58,16 @@ const showResult = async (decodedText) => {
   } else {
     alert('FALLO')
   }
+}
+
+const getMockCertData = () => {
+  router.push({
+    path: '/validate',
+    query: {
+      qr: '1-1',
+      version: '1',
+    },
+  })
 }
 </script>
 
@@ -83,10 +83,8 @@ const showResult = async (decodedText) => {
     @error="onError"
   ></StreamBarcodeReader>
 
-  <ValidCertificate :certificateData="certificateData" />
-
-  <div class="px-4">
-    <button type="submit" class="btn btn-primary" @click="validateCert">
+  <div v-if="APP_MODE_IS_DEVELOP" class="px-4">
+    <button type="submit" class="btn btn-primary" @click="getMockCertData">
       Mock validar certificado
     </button>
     <div class="alert alert-info" role="alert">Devices: {{ videoDevices.count }}</div>
