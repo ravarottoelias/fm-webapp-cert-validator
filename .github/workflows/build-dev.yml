@@ -10,13 +10,11 @@ jobs:
     name: Build and Push
     runs-on: ubuntu-latest
     environment: dev
-    env:
-      VITE_NODE_ENV: ${{ vars.VITE_NODE_ENV }}
-      VITE_URL_WEB_FIME: ${{ vars.VITE_URL_WEB_FIME }}
-      VITE_API_MS_CERT_VALIDATION: ${{ vars.VITE_API_MS_CERT_VALIDATION }}
     permissions:
       contents: write
     steps:
+      - run: |
+          echo "Probando var: ${{ vars.VITE_NODE_ENV }}"
       - name: git-checkout
         uses: actions/checkout@v3
 
