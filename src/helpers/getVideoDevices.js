@@ -2,8 +2,7 @@ export const getVideoDevices = async () => {
   try {
     const devicesList = await navigator.mediaDevices.enumerateDevices()
     if (devicesList) {
-      devicesList.filter((device) => device.kind === 'videoinput')
-      return devicesList
+      return devicesList.filter((device) => device.kind === 'videoinput')
     }
   } catch (error) {
     console.error(error)

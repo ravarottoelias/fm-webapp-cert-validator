@@ -21,7 +21,6 @@ const validateCert = async () => {
     qrCode: qr,
     qrVersion: version,
   })
-  console.log(response)
   if (response != null) {
     succesScreen.value = true
     certData.value = response

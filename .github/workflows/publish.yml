@@ -1,4 +1,4 @@
-name: Generate a build and push to another branch
+name: Build and Deploy
 
 on:
   push:
@@ -7,6 +7,10 @@ on:
 
 jobs:
   build:
+    env:
+      VITE_NODE_ENV: ${{ vars.VITE_NODE_ENV }}
+      VITE_URL_WEB_FIME: ${{ vars.VITE_URL_WEB_FIME }}
+      VITE_API_MS_CERT_VALIDATION: ${{ vars.VITE_API_MS_CERT_VALIDATION }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -28,4 +32,4 @@ jobs:
           BRANCH: dist-develop # The branch name where you want to push the assets
           FOLDER: dist # The directory where your assets are generated
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
-          MESSAGE: "Build: ({sha}) {msg}" # The commit message
+          MESSAGE: 'Build: ({sha}) {msg}' # The commit message

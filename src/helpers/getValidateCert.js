@@ -3,7 +3,8 @@ import axios from 'axios'
 const API_URL = import.meta.env.VITE_API_MS_CERT_VALIDATION
 
 export const getValidateCertificate = async (data) => {
-  console.log('Calling getValidateCertificate')
+  console.info('Calling getValidateCertificate ...')
+  console.info(data)
   const body = {
     qrCode: data.qrCode,
     qrVersion: data.qrVersion,
@@ -15,6 +16,8 @@ export const getValidateCertificate = async (data) => {
     return response.data.response
   } catch (error) {
     if (error.response?.status == 500) {
+      console.error('Error trying validate QR: ' + data.qrCode)
+      console.error(error)
       throw error
     } else {
       return null

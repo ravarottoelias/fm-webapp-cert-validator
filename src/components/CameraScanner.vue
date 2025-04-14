@@ -1,8 +1,8 @@
 <script setup>
-import { thereIsAnyVideoDevice } from '@/helpers/getVideoDevices'
 import { onMounted, reactive, ref } from 'vue'
 import { StreamBarcodeReader } from 'vue-barcode-reader'
 import { useRouter } from 'vue-router'
+import { thereIsAnyVideoDevice } from '../helpers/getVideoDevices'
 import LoadingComponent from './LoadingComponent.vue'
 import NoVideoDevicesFound from './NoVideoDevicesFound.vue'
 
@@ -28,15 +28,16 @@ const onDecode = (text) => {
 
 onMounted(() => {
   if (APP_MODE_IS_DEVELOP) {
-    console.log('----------------------')
-    console.log('APP MODE IS: ' + import.meta.env.VITE_NODE_ENV)
-    console.log('----------------------')
+    console.info('----------------------')
+    console.info('APP MODE IS: ' + import.meta.env.VITE_NODE_ENV)
+    console.info('----------------------')
   }
   checkVideoDevices()
 })
 
 const checkVideoDevices = async () => {
-  if (await thereIsAnyVideoDevice()) {
+  const anyVideoDevice = await thereIsAnyVideoDevice()
+  if (anyVideoDevice) {
     showQRScanner.value = true
   }
   isLoading.value = false
@@ -72,7 +73,7 @@ const getMockCertData = () => {
 </script>
 
 <template>
-  <NoVideoDevicesFound v-if="videoDevices.count == 0" />
+  <NoVideoDevicesFound v-if="!showQRScanner" />
 
   <LoadingComponent v-if="isLoading" />
 
@@ -89,7 +90,7 @@ const getMockCertData = () => {
     </button>
     <div class="alert alert-info" role="alert">Devices: {{ videoDevices.count }}</div>
     <div class="alert alert-secondary" role="alert">
-      The decoded value in QR/barcode is: <b>{{ decodedText }}</b>
+      Decoded: <b>{{ decodedText }}</b>
     </div>
   </div>
 </template>
