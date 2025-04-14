@@ -30,3 +30,13 @@ coverage
 *.tsbuildinfo
 .env.development
 .env.production
+
+.vscode
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# Optional cache
+.cache/
+vite.config.ts.tsbuildinfo
