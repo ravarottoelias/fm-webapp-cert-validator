@@ -18,7 +18,11 @@ jobs:
       VITE_API_MS_CERT_VALIDATION: ${{ vars.VITE_API_MS_CERT_VALIDATION }}
     steps:
       - run: |
+<<<<<<< HEAD
           echo "Desplegando app en ambiente: ${{ vars.VITE_NODE_ENV }}"
+=======
+          echo "Cargando variables del ambiente. APP_MODE: ${{ vars.VITE_NODE_ENV }} "
+>>>>>>> 846095f865501dc2f92438a4514a63dc2443f7e4
       - name: git-checkout
         uses: actions/checkout@v3
 
