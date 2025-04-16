@@ -13,7 +13,7 @@ const qr = route.query.qr
 const version = route.query.version
 const certData = ref({})
 const succesScreen = ref(false)
-const urlCert = ref(API_URL + 'certificates/__uuid__/pdf')
+const urlCert = ref(API_URL + '/certificates/__uuid__/pdf')
 
 //MOCK VALIDA CERTIFICADO
 const validateCert = async () => {
